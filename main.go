@@ -1,6 +1,7 @@
 package main
 
 import (
+	"SampleGoGin/database"
 	. "SampleGoGin/src"
 
 	"github.com/gin-gonic/gin"
@@ -10,6 +11,10 @@ func main() {
 	router := gin.Default()
 	v1 := router.Group("/v1")
 	AddUserRouter(v1)
+
+	go func() {
+		database.DB()
+	}()
 
 	// router.GET("/ping", func(c *gin.Context) {
 	// 	c.JSON(200, gin.H{
