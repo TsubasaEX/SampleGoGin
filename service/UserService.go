@@ -2,7 +2,9 @@ package service
 
 import (
 	"SampleGoGin/pojo"
+	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,4 +24,35 @@ func PostUser(c *gin.Context) {
 	}
 	userList = append(userList, user)
 	c.JSON(http.StatusOK, "Successfully posted")
+}
+
+func DeleteUser(c *gin.Context) {
+	userId, _ := strconv.Atoi(c.Param("id"))
+	for index, user := range userList {
+		if user.Id == userId {
+			userList = append(userList[:index], userList[index+1:]...)
+			c.JSON(http.StatusOK, "Successfully deleted")
+			return
+		}
+	}
+	c.JSON(http.StatusNotFound, "Not Found")
+}
+
+func PutUser(c *gin.Context) {
+	beforeUser := pojo.User{}
+	err := c.BindJSON(&beforeUser)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "Error : "+err.Error())
+	}
+
+	userId, _ := strconv.Atoi(c.Param("id"))
+	for index, user := range userList {
+		if user.Id == userId {
+			userList[index] = beforeUser
+			log.Println(userList[index])
+			c.JSON(http.StatusOK, "Successfully put")
+			return
+		}
+	}
+	c.JSON(http.StatusNotFound, "Not Found")
 }
