@@ -6,11 +6,16 @@ import (
 )
 
 type User struct { //DB : Users
-	Id int `json:"UserId" gorm:"primaryKey"` // Id DB: id, UserId DB: user_id
+	Id int `json:"UserId" gorm:"primaryKey" binding:"required"` // Id DB: id, UserId DB: user_id
 	// Name     string `json:"UserName" gorm:"Column:username"` // Name DB: name, UserName DB:user_name
-	Name     string `json:"UserName"`
-	Password string `json:"UserPassword"`
-	Email    string `json:"UserEmail"`
+	Name     string `json:"UserName" binding:"required,gt=5"`
+	Password string `json:"UserPassword" binding:"min=4,max=20,userpwd"`
+	Email    string `json:"UserEmail" binding:"email"`
+}
+
+type Users struct {
+	UserList     []User `json:"UserList" binding:"required,gt=0,lt=3"`
+	UserListSize int    `json:"UserListSize"`
 }
 
 func FindAllUsers() []User {
@@ -35,6 +40,16 @@ func CreateUser(user User) (User, error) {
 		return User{}, err
 	}
 	return user, nil
+}
+
+// func CreateUsers(users []User) error {
+func CreateUsers(users ...User) error {
+	err := database.DBConnect.Create(users).Error
+	if err != nil {
+		log.Println("Error :" + err.Error())
+		return err
+	}
+	return nil
 }
 
 func DeleteUser(userId int) bool {

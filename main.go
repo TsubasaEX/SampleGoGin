@@ -3,11 +3,14 @@ package main
 import (
 	"SampleGoGin/database"
 	"SampleGoGin/middlewares"
+	"SampleGoGin/pojo"
 	. "SampleGoGin/src"
 	"io"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 )
 
 func setupLogging() {
@@ -19,7 +22,14 @@ func main() {
 	setupLogging()
 	router := gin.Default()
 
-	router.Use(gin.BasicAuth(gin.Accounts{"Tom": "123456"}), middlewares.Logger())
+	// Register Validator
+	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+		v.RegisterValidation("userpwd", middlewares.UserPwd)
+		v.RegisterStructValidation(middlewares.UserList, pojo.Users{})
+	}
+
+	// router.Use(gin.BasicAuth(gin.Accounts{"Tom": "123456"}), middlewares.Logger())
+	router.Use(middlewares.Logger())
 
 	v1 := router.Group("/v1")
 	AddUserRouter(v1)

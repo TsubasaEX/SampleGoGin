@@ -86,3 +86,20 @@ func PutUser(c *gin.Context) {
 	// }
 	// c.JSON(http.StatusNotFound, "Not Found")
 }
+
+func CreateUserList(c *gin.Context) {
+	users := pojo.Users{}
+	err := c.BindJSON(&users)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "Error : "+err.Error())
+		return
+	}
+
+	// err = pojo.CreateUsers(users.UserList)
+	err = pojo.CreateUsers(users.UserList...)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "Error : "+err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, users)
+}
