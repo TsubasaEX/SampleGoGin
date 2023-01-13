@@ -19,6 +19,6 @@ func UserList(field validator.StructLevel) {
 	if users.UserListSize == len(users.UserList) {
 
 	} else {
-		field.ReportError(users.UserListSize, "Size of user list", "UserListSize", "UserListSizeMustEqualsUserList", "")
+		field.ReportError(users.UserListSize, "UserListSize", "UserListSize", "UserListSizeMustEqualsUserList", "")
 	}
 }

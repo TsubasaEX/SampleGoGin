@@ -13,15 +13,5 @@
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
-::1 - [2023-01-13 18:11:22.1727597 +0800 CST m=+6.350888001] DELETE /v1/users/100 200 
-[GIN] 2023/01/13 - 18:11:22 | 200 |     122.078ms |             ::1 | DELETE   "/v1/users/100"
-::1 - [2023-01-13 18:11:25.2058933 +0800 CST m=+9.384021601] DELETE /v1/users/200 200 
-[GIN] 2023/01/13 - 18:11:25 | 200 |     53.0373ms |             ::1 | DELETE   "/v1/users/200"
-[GIN-debug] redirecting request 301: /v1/users/ --> /v1/users/
-::1 - [2023-01-13 18:11:26.5829829 +0800 CST m=+10.761111201] GET /v1/users/ 200 
-[GIN] 2023/01/13 - 18:11:26 | 200 |      1.0004ms |             ::1 | GET      "/v1/users/"
-::1 - [2023-01-13 18:11:38.5448086 +0800 CST m=+22.722936901] POST /v1/users/more 200 
-[GIN] 2023/01/13 - 18:11:38 | 200 |    8.0329528s |             ::1 | POST     "/v1/users/more"
-[GIN-debug] redirecting request 301: /v1/users/ --> /v1/users/
-::1 - [2023-01-13 18:11:41.8192024 +0800 CST m=+25.997330701] GET /v1/users/ 200 
-[GIN] 2023/01/13 - 18:11:41 | 200 |            0s |             ::1 | GET      "/v1/users/"
+::1 - [2023-01-13 18:17:50.8671011 +0800 CST m=+2.569826201] POST /v1/users/more 400 
+[GIN] 2023/01/13 - 18:17:50 | 400 |     36.0248ms |             ::1 | POST     "/v1/users/more"
