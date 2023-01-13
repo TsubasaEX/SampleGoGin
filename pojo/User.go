@@ -20,9 +20,28 @@ func FindAllUsers() []User {
 
 func FindByUserId(userId int) User {
 	var user User
-	err := database.DBConnect.Where("id = ?", userId).Last(&user).Error
+	err := database.DBConnect.Where("id = ?", userId).First(&user).Error
 	if err != nil { // if not found, the err wiil be “record not found”
 		log.Println("Error :" + err.Error())
 	}
 	return user
+}
+
+func CreateUser(user User) User {
+	database.DBConnect.Create(&user)
+	return user
+}
+
+func DeleteUser(userId int) bool {
+	result := database.DBConnect.Where("id = ?", userId).Delete(&User{})
+	if result.RowsAffected == 0 {
+		return false
+	}
+	return true
+}
+
+func UpdateUser(userId int, user User) User {
+	newUser := User{}
+	database.DBConnect.Model(&newUser).Where("id = ?", userId).Updates(user)
+	return newUser
 }
