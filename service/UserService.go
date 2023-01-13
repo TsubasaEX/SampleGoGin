@@ -36,7 +36,11 @@ func PostUser(c *gin.Context) {
 		return
 	}
 	// userList = append(userList, user)
-	newUser := pojo.CreateUser(user)
+	newUser, err := pojo.CreateUser(user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "Error : "+err.Error())
+		return
+	}
 	c.JSON(http.StatusOK, newUser)
 }
 
