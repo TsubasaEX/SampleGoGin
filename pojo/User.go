@@ -54,14 +54,17 @@ func CreateUsers(users ...User) error {
 
 func DeleteUser(userId int) bool {
 	result := database.DBConnect.Where("id = ?", userId).Delete(&User{})
-	if result.RowsAffected == 0 {
-		return false
-	}
-	return true
+	return result.RowsAffected > 0
 }
 
 func UpdateUser(userId int, user User) User {
 	newUser := User{}
 	database.DBConnect.Model(&newUser).Where("id = ?", userId).Updates(user)
 	return newUser
+}
+
+func CheckUserPassword(name string, password string) User {
+	user := User{}
+	database.DBConnect.Where("name = ? and password = ?", name, password).First(&user)
+	return user
 }

@@ -29,6 +29,7 @@ func main() {
 	}
 
 	// router.Use(gin.BasicAuth(gin.Accounts{"Tom": "123456"}), middlewares.Logger())
+	// router.Use(middlewares.SetSession(), middlewares.Logger())
 	router.Use(middlewares.Logger())
 
 	v1 := router.Group("/v1")
