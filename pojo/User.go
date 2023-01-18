@@ -3,6 +3,8 @@ package pojo
 import (
 	"SampleGoGin/database"
 	"log"
+
+	"gopkg.in/mgo.v2/bson"
 )
 
 type User struct { //DB : Users
@@ -67,4 +69,48 @@ func CheckUserPassword(name string, password string) User {
 	user := User{}
 	database.DBConnect.Where("name = ? and password = ?", name, password).First(&user)
 	return user
+}
+
+// MongoDB
+// -------------------------------------------------------------
+func MgoCreateUser(user User) User {
+	database.MgoConnect.Insert(user)
+	return user
+}
+
+func MgoFindAllUsers() []User {
+	var users []User
+	database.MgoConnect.Find(nil).All(&users)
+	return users
+}
+
+func MgoFindById(userId int) User {
+	user := User{}
+	database.MgoConnect.Find(bson.M{
+		"id": userId,
+	}).One(&user)
+	return user
+}
+
+func MgoUpdateUser(userId int, user User) User {
+	updateUserId := bson.M{"id": userId}
+	updateData := bson.M{"$set": user}
+	err := database.MgoConnect.Update(updateUserId, updateData)
+	if err != nil {
+		log.Println("Error :" + err.Error())
+		return User{}
+	}
+	return user
+}
+
+// DeleteUser
+func MgoDeleteUser(userId int) bool {
+	err := database.MgoConnect.Remove(bson.M{
+		"id": userId,
+	})
+	if err != nil {
+		log.Println("Error :" + err.Error())
+		return false
+	}
+	return true
 }

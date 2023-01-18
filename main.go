@@ -37,6 +37,7 @@ func main() {
 
 	go func() {
 		database.DB()
+		database.MongoDB()
 	}()
 
 	// router.GET("/ping", func(c *gin.Context) {

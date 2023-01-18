@@ -159,7 +159,7 @@ func CheckUserSession(c *gin.Context) {
 	})
 }
 
-func RedisOneUser(c *gin.Context) {
+func SetUserInContext(c *gin.Context) {
 	id := c.Param("id")
 	userId, _ := strconv.Atoi(id)
 	if userId == 0 {
@@ -171,8 +171,79 @@ func RedisOneUser(c *gin.Context) {
 	c.Set("dbResult", user)
 }
 
-func RedisUserAll(c *gin.Context) {
+func SetUsersInContext(c *gin.Context) {
 	users := []pojo.User{}
 	database.DBConnect.Find(&users)
 	c.Set("dbUserAll", users)
+}
+
+// MongoDB Create User
+func MongoDBCreateUser(c *gin.Context) {
+	user := pojo.User{}
+	err := c.BindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "Error : "+err.Error())
+		return
+	}
+	newUser := pojo.MgoCreateUser(user)
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User Created Successfully",
+		"User":    newUser,
+	})
+}
+
+// MongoDB FindAll Users
+func MongoDBFindAllUser(c *gin.Context) {
+	users := pojo.MgoFindAllUsers()
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Users Found Successfully",
+		"Users":   users,
+	})
+}
+
+// MongoDB Find User By Id
+func MongoDBFindUserById(c *gin.Context) {
+	userId, _ := strconv.Atoi(c.Param("id"))
+	user := pojo.MgoFindById(userId)
+	if user.Id == 0 {
+		c.JSON(http.StatusNotFound, "Not Found")
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User Found Successfully",
+		"User":    user,
+	})
+}
+
+// Mongo Update User
+func MongoDBUpdateUser(c *gin.Context) {
+	user := pojo.User{}
+	err := c.BindJSON(&user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, "Error : "+err.Error())
+		return
+	}
+	userId, _ := strconv.Atoi(c.Param("id"))
+	user = pojo.MgoUpdateUser(userId, user)
+	if user.Id == 0 {
+		c.JSON(http.StatusNotFound, "Not Found")
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User Updated Successfully",
+		"User":    user,
+	})
+}
+
+// Mongo Delete User
+func MongoDBDeleteUser(c *gin.Context) {
+	userId, _ := strconv.Atoi(c.Param("id"))
+	user := pojo.MgoDeleteUser(userId)
+	if !user {
+		c.JSON(http.StatusNotFound, "Not Found")
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User Deleted Successfully",
+	})
 }
