@@ -1,6 +1,7 @@
 package service
 
 import (
+	"SampleGoGin/database"
 	"SampleGoGin/middlewares"
 	"SampleGoGin/pojo"
 	"log"
@@ -156,4 +157,22 @@ func CheckUserSession(c *gin.Context) {
 		"message": "Check Session Successfully",
 		"UserId":  middlewares.GetSession(c),
 	})
+}
+
+func RedisOneUser(c *gin.Context) {
+	id := c.Param("id")
+	userId, _ := strconv.Atoi(id)
+	if userId == 0 {
+		c.JSON(http.StatusNotFound, "Error")
+		return
+	}
+	user := pojo.User{}
+	database.DBConnect.Find(&user, userId)
+	c.Set("dbResult", user)
+}
+
+func RedisUserAll(c *gin.Context) {
+	users := []pojo.User{}
+	database.DBConnect.Find(&users)
+	c.Set("dbUserAll", users)
 }

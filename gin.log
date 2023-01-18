@@ -4,8 +4,8 @@
  - using env:	export GIN_MODE=release
  - using code:	gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] GET    /v1/users/                --> SampleGoGin/service.FindAllUsers (5 handlers)
-[GIN-debug] GET    /v1/users/:id             --> SampleGoGin/service.FindByUserId (5 handlers)
+[GIN-debug] GET    /v1/users/                --> SampleGoGin/service.CacheUserAllDecorator.func1 (5 handlers)
+[GIN-debug] GET    /v1/users/:id             --> SampleGoGin/service.CacheOneUserDecorator.func1 (5 handlers)
 [GIN-debug] POST   /v1/users/                --> SampleGoGin/service.PostUser (5 handlers)
 [GIN-debug] POST   /v1/users/more            --> SampleGoGin/service.CreateUserList (5 handlers)
 [GIN-debug] PUT    /v1/users/:id             --> SampleGoGin/service.PutUser (5 handlers)
@@ -17,20 +17,23 @@
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :8000
 [GIN-debug] redirecting request 301: /v1/users/ --> /v1/users/
-::1 - [2023-01-14 17:50:44.8108933 +0800 CST m=+3.575549401] GET /v1/users/ 200 
-[GIN] 2023/01/14 - 17:50:44 | 200 |     34.0269ms |             ::1 | GET      "/v1/users/"
-::1 - [2023-01-14 17:50:48.4117509 +0800 CST m=+7.176407001] DELETE /v1/users/100 401 
-[GIN] 2023/01/14 - 17:50:48 | 401 |            0s |             ::1 | DELETE   "/v1/users/100"
-::1 - [2023-01-14 17:50:49.3223995 +0800 CST m=+8.087055601] DELETE /v1/users/100 401 
-[GIN] 2023/01/14 - 17:50:49 | 401 |            0s |             ::1 | DELETE   "/v1/users/100"
-::1 - [2023-01-14 17:50:50.9025225 +0800 CST m=+9.667178601] GET /v1/users/logout 401 
-[GIN] 2023/01/14 - 17:50:50 | 401 |            0s |             ::1 | GET      "/v1/users/logout"
-::1 - [2023-01-14 17:50:53.2211777 +0800 CST m=+11.985833801] POST /v1/users/login 200 
-[GIN] 2023/01/14 - 17:50:53 | 200 |      1.0011ms |             ::1 | POST     "/v1/users/login"
-::1 - [2023-01-14 17:50:55.4187283 +0800 CST m=+14.183384401] DELETE /v1/users/100 404 
-[GIN] 2023/01/14 - 17:50:55 | 404 |           1ms |             ::1 | DELETE   "/v1/users/100"
-::1 - [2023-01-14 17:50:58.0536018 +0800 CST m=+16.818257901] GET /v1/users/logout 200 
-[GIN] 2023/01/14 - 17:50:58 | 200 |      1.0019ms |             ::1 | GET      "/v1/users/logout"
+::1 - [2023-01-18 11:18:20.008911 +0800 CST m=+3.640786201] GET /v1/users/ 200 
+[GIN] 2023/01/18 - 11:18:20 | 200 |     12.4112ms |             ::1 | GET      "/v1/users/"
 [GIN-debug] redirecting request 301: /v1/users/ --> /v1/users/
-::1 - [2023-01-14 17:51:03.0313398 +0800 CST m=+21.795995901] GET /v1/users/ 200 
-[GIN] 2023/01/14 - 17:51:03 | 200 |       986.9µs |             ::1 | GET      "/v1/users/"
+::1 - [2023-01-18 11:18:23.1519799 +0800 CST m=+6.783855101] GET /v1/users/ 200 
+[GIN] 2023/01/18 - 11:18:23 | 200 |      1.2167ms |             ::1 | GET      "/v1/users/"
+[GIN-debug] redirecting request 301: /v1/users/ --> /v1/users/
+::1 - [2023-01-18 11:18:25.3306465 +0800 CST m=+8.962521701] GET /v1/users/ 200 
+[GIN] 2023/01/18 - 11:18:25 | 200 |       686.9µs |             ::1 | GET      "/v1/users/"
+::1 - [2023-01-18 11:18:28.371092 +0800 CST m=+12.002967201] GET /v1/users/1 200 
+[GIN] 2023/01/18 - 11:18:28 | 200 |      1.9119ms |             ::1 | GET      "/v1/users/1"
+::1 - [2023-01-18 11:18:30.0317763 +0800 CST m=+13.663651501] GET /v1/users/1 200 
+[GIN] 2023/01/18 - 11:18:30 | 200 |        83.5µs |             ::1 | GET      "/v1/users/1"
+::1 - [2023-01-18 11:18:31.510241 +0800 CST m=+15.142116201] GET /v1/users/1 200 
+[GIN] 2023/01/18 - 11:18:31 | 200 |       743.9µs |             ::1 | GET      "/v1/users/1"
+::1 - [2023-01-18 11:18:32.08026 +0800 CST m=+15.712135201] GET /v1/users/1 200 
+[GIN] 2023/01/18 - 11:18:32 | 200 |       203.8µs |             ::1 | GET      "/v1/users/1"
+::1 - [2023-01-18 11:18:32.5841715 +0800 CST m=+16.216046701] GET /v1/users/1 200 
+[GIN] 2023/01/18 - 11:18:32 | 200 |       780.4µs |             ::1 | GET      "/v1/users/1"
+::1 - [2023-01-18 11:18:33.7725869 +0800 CST m=+17.404462101] GET /v1/users/1 200 
+[GIN] 2023/01/18 - 11:18:33 | 200 |       422.3µs |             ::1 | GET      "/v1/users/1"
