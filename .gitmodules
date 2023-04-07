@@ -1,6 +1,0 @@
-[submodule "jsonf"]
-	path = jsonf
-	url = https://github.com/miolini/jsonf.git
-[submodule "go-oauth2-pg"]
-	path = go-oauth2-pg
-	url = https://github.com/vgarvardt/go-oauth2-pg.git
