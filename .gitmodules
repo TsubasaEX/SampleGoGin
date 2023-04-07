@@ -1,0 +1,3 @@
+[submodule "jsonf"]
+	path = jsonf
+	url = https://github.com/miolini/jsonf.git
